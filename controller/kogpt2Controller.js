@@ -1,5 +1,4 @@
 const axios = require("axios");
-const FormData = require('form-data');
 
 module.exports = {
     print: function(a) {
@@ -7,27 +6,22 @@ module.exports = {
     },
     
     getSentence: function(str) {
-
-        var formData = new FormData();
-        formData.append('context',str);
-        formData.append('model','gpt2-story');
-        formData.append('length','long');
-
+        
         axios({
             method: 'post',
-            url: 'https://kubecon-tabtab-ainize-team.endpoint.ainize.ai/gpt2',
+            url: 'https://skt-kogpt2-text-generation-ainize-team.endpoint.ainize.ai/prediction/generate',
             headers: {
-                'Content-Type' : 'multipart/form-data'
+                'Content-Type' : 'application/json'
             },
             data: {
-                context:str,
-                model: "gpt2-story",
-                length: "short"
+                text:str,
+                max_new_tokens: 5,
+                repetition_penalty: 2
             }
         })
         .then((res) => {
             console.log("in res");
-            console.log(res);
+            console.log(res.data);
         })
         .catch((err) => {
             console.log("in err")

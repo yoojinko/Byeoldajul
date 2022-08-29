@@ -1,8 +1,12 @@
 const express = require("express");
 const path = require("path");
+const cors = require('cors');
 const kogpt2Controller = require("./controller/kogpt2Controller.js");
 const app = express();
 const port = 3000;
+const corsOptions= {
+    origin: 'http://localhost:3000'
+}
 
 app.get("/", (req,res) => {
     res.render("index"); 
@@ -21,7 +25,7 @@ app.get("/guess", (req,res) => {
 
 app.set("views", path.join(__dirname,"src"));
 app.set("view engine", "ejs");
-
+app.use(cors(corsOptions));
 app.listen(port, () => {
     console.log(`서버가 실행됩니다. http://localhost:${port}`)
 })
