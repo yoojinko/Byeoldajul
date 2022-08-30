@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const cors = require('cors');
+const ejs = require("ejs");
 const kogpt2Controller = require("./controller/kogpt2Controller.js");
 const app = express();
 const port = 3000;
@@ -9,18 +10,21 @@ const corsOptions= {
 }
 
 app.get("/", (req,res) => {
-    res.render("index"); 
+    res.render("index", {
+        resultString:''
+    }); 
 })
 
-app.get("/guess", (req,res) => {
-    const word = req.query.word;
-    console.log(typeof(word));
-    
-    const alphabets = word.split('');
-
-    kogpt2Controller.getSentence(alphabets[1]);
-    res.send(alphabets[0]);
-    //res.send('word');
+app.get("/guess", async (req,res) => {
+    console.log(req.query);
+    await kogpt2Controller.generateSentence(req.query.word).then((result)=>{
+        res.render('index', {
+            resultString : result
+        });
+    }).catch((err)=>{
+        console.log(err);
+        res.render('error');
+    });
 })
 
 app.set("views", path.join(__dirname,"src"));
