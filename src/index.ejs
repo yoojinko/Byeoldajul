@@ -2,30 +2,77 @@
 <html lang="ko">
     <head>
         <meta charset="UTF-8">
-        <title>아 머리아파</title>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+        <title>N행시 기사 만들기</title>
+        <!-- jquery -->
         <script src="https://code.jquery.com/jquery-3.6.1.slim.js" integrity="sha256-tXm+sa1uzsbFnbXt8GJqsgi2Tw+m4BLGDof6eUPjbtk=" crossorigin="anonymous"></script>
+
+        <!-- bootstrap -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
     </head>
     <body>
+        <div class="styles">
+            <style>
+                .container {
+                    width:70%;
+                }
+
+                .row > hr {
+                    width:90%;
+                    margin:auto;
+                }
+                input {
+                    width:150px;
+                    border-radius:5px;
+                    font-size:large;
+                    font-weight: bold;
+                }
+                h1 {
+                    text-align:center;
+                }
+                span {
+                    font-size:x-large;
+                }
+                button {
+                    border-radius: 5px;
+                }
+            </style>
+        </div>
+        <div class="container" id="justify-content">
+            <div class="container row">
+                <div class="justify-content-center">
+                <h1>N행시로 기사 만들기</h1>
+            </div>
+            </div>
+        </div>
         <div class="container">
-            <div class="row">
-                <div class="col-md-12" style="background-color:grey; margin:auto;">
+            <div class="row" 
+            style="float: none; 
+                    margine: 100 auto;
+                    background-color:rgb(202, 193, 193);
+                    ">
+                <div class="col-md-12">
                     <form method='get' action="/guess">
-                        <input type="text" name="word" class="plain_text">
+                        <input type="number" name="size" max="30" placeholder="문장 길이" value="<%= orgSize %>" style="width: 120px;">
+                        <input type="text" name="word" class="plain_text" placeholder="한글 텍스트" value="<%= orgString %>"><span>로</span>
+                        <br>
+                        <span>N행시 해보겠습니다. &nbsp;</span><button type="submit">실행</button>
                     </form>
-                    <h3>로 N행시 해보겠습니다.</h3>
-                    <button class="submit">시작!</button>
                 </div>
-                <div>
-                    <h3><%= resultString %></h3>
+                <hr>
+                <div class="col-md-12" id="result">
+                    <!-- get parameter -->
+                    <input type='hidden' value="<%= resultString %>">
+                    <br>
+                    <!-- print result -->
+                    <p></p>
+                    <br>
                 </div>
             </div>
         </div>
     </body>
 </html>
 <script>
-    $(".submit").on("click", () => {
-        var text = $(".plain_text").val();
-        console.log(text);
-    })
+    const resHtmlString = $('#result > input').val();
+    $('#result > p').html(resHtmlString);
 </script>
