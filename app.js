@@ -11,14 +11,20 @@ const corsOptions= {
 
 app.get("/", (req,res) => {
     res.render("index", {
-        resultString:''
+        orgString : '',
+        orgSize : '',
+        resultString : ''
     }); 
 })
 
 app.get("/guess", async (req,res) => {
-    console.log(req.query);
-    await kogpt2Controller.generateSentence(req.query.word).then((result)=>{
+    const org = req.query.word;
+    const size = req.query.size > 0 && req.query.size < 30 ? req.query.size : 16;
+    await kogpt2Controller.generateSentence(org, size).then((result)=>{
+        
         res.render('index', {
+            orgString : org,
+            orgSize : size,
             resultString : result
         });
     }).catch((err)=>{

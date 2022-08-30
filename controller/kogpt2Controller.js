@@ -5,7 +5,7 @@ module.exports = {
         console.log(a);
     },
     
-    generateSentence: async function(str) {
+    generateSentence: async function(str, size) {
         const alphabets = str.split('');
 
         console.log(str);
@@ -13,10 +13,9 @@ module.exports = {
         let paramString = '';
     
         for(const alph of alphabets) {
-            paramString = resString + "\n" + alph;
-            console.log(paramString);
-            await this.getSentenceByAlph(paramString).then((res)=>{
-                console.log(res);
+            if(alph === ' ') continue;
+            paramString = resString + "/" + alph;
+            await this.getSentenceByAlph(paramString, size).then((res)=>{
                 resString = res;
             })
             .catch((err) => {
@@ -24,11 +23,21 @@ module.exports = {
             })
         }
 
-        return resString;
+        const sentences = resString.split('/');
+        let result = '';
+        for(const sentence of sentences) {
+            let first = '<b>'+sentence.substr(0,1)+'</b>';
+            let elseStr = sentence.substr(1, sentence.length-1)+'<br>';
+            result = result+first+elseStr;
+
+            console.log(resString);
+        }
+
+        return '<p>'+result+'</p>';
     },
 
-    getSentenceByAlph: async function(str) {
-        //console.log("start");
+    getSentenceByAlph: async function(str, size) {
+        console.log("start", str, size);
         const result = await axios({
             method: 'post',
             url: 'https://skt-kogpt2-text-generation-ainize-team.endpoint.ainize.ai/prediction/generate',
@@ -37,15 +46,14 @@ module.exports = {
             },
             data: {
                 text:str,
-                max_new_tokens: 7,
-                repetition_penalty: 2
+                max_new_tokens: size,
+                repetition_penalty: 1
             }
         })
         .then((res) => {
             return res.data;
         })
         .catch((err) => {
-            console.log("in err")
             console.log(err);
         })
         console.log('end');
